@@ -12,8 +12,11 @@ I used the pandas library to calculate summary statistics of the traffic
 signs data set:
 
 Number of training examples = 4
+
 Number of testing examples = 4
+
 Image data shape = (32, 32, 3)
+
 Number of classes = 43
 
 
@@ -24,16 +27,18 @@ As a first step, I decided to convert the images to grayscale because ...
 
 Here is an example of a traffic sign image before and after grayscaling.
 
-![alt text][./examples/exampl.jpg]
-![alt text][./examples/gray.jpg]
+![Example](./examples/exampl.jpg)
+
+
+![alt text](./examples/gray.jpg)
 
 
 As a last step, I normalized the image data because it would create an image with zero mean
-![alt text][./examples/normalized.jpg]
+![alt text](./examples/normalized.jpg)
 
 
 My initial model consisted of the following layers:
-
+```
 Layer                                          Description
 Convolution Layer 1                            Layer from 32 X 32 X 1 --> 28 X 28 X 6
 Activation Layer 1                             Relu activation
@@ -48,15 +53,21 @@ Fully Connected Layer 2                        Layer from 120 --> 84
 Activation Layer 3                             Relu activation
 Fully Connected Layer 3                        Layer from 84 --> 43
 
-
+```
 This model gave me an accuracy of only 0.929. Because of this, I decided to add a dropout layer and another convolution layer to help increase accuracy. I also modified the epochs and batch size to the following:
+
+
 EPOCHS = 100
+
+
 BATCH_SIZE = 100
+
 
 The drop out rate was set to 0.5.
 
-So the finalized model is the following:
 
+So the finalized model is the following:
+```
 Layer                                          Description
 Convolution Layer 1                            Layer from 32 X 32 X 1 --> 28 X 28 X 6
 Activation Layer 1                             Relu activation
@@ -75,13 +86,15 @@ Dropout Layer 2                                Droput wit prob = 0.5
 Fully Connected Layer 2                        Layer from 120 --> 84
 Activation Layer 4                             Relu activation
 Fully Connected Layer 3                        Layer from 84 --> 43
-
+```
 
 The final model has 2 dropout layers and one additional conolution layer. This gives an accuracy of 0.948
 
 The learning rate is set to 0.0006
 
+
 The initial accuracy was 0.929.This showed that my model was underfitted because I saw low accuracy on both training and validation set. I thought that adding another convolution layer would help but it did not exactly work in my favor. Then I decided to add two dropout layers which would help increase the accuracy
+
 
 Final model statistics:
 
@@ -101,13 +114,13 @@ Test Accuracy = 0.949
 
 Here are six German traffic signs that I found on the web:
 
-![alt text][./mysigns/1.jpg] ![alt text][./mysigns/2.jpg] ![alt text][./mysigns/3.jpg] 
-![alt text][./mysigns/4.jpg] ![alt text][./mysigns/5.jpg]![alt text][./mysigns/6.jpg]
+![sign 1](./mysigns/1.jpg) ![sign 2](./mysigns/2.jpg) ![sign 3](./mysigns/3.jpg)
+![sign 4](./mysigns/4.jpg) ![sign 5](./mysigns/5.jpg)![sign 6](./mysigns/6.jpg])
 
 I had to get bigger pictures and resize them, so I was not surprised when I did not get a 100 % accuracy
 
 The results of the prediction are as follows:
-
+```
 Image:                                        Prediction:
 
 AnimalCrossing                                AnimalCrossing
@@ -117,7 +130,7 @@ Priority Road                                 Priority Road
 No entry                                      No entry
 Slippery Road                                 Slippery Road
 
-
+```
 Overall accuracy is at 0.83
 
 
