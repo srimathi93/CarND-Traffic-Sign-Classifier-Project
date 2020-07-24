@@ -147,6 +147,8 @@ Overall accuracy is at 0.83
 
 
 The softmax for the images is given belw:
+
+```
 TopKV2(values=array([[  1.00000000e+00,   2.05589453e-37,   0.00000000e+00,
           0.00000000e+00,   0.00000000e+00],
        [  1.00000000e+00,   0.00000000e+00,   0.00000000e+00,
@@ -165,5 +167,5 @@ TopKV2(values=array([[  1.00000000e+00,   2.05589453e-37,   0.00000000e+00,
        [17, 14, 33, 34, 12],
        [23, 11, 30, 29,  3]], dtype=int32))
        
-
+```
 As you can see for the mis labelled image, the highest probability is that it is a 30 speed limit instead 50 which I attribute to the poor quality of the image.
