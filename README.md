@@ -30,11 +30,13 @@ Here is an example of a traffic sign image before and after grayscaling.
 ![Example](./examples/exampl.jpg)
 
 
+
 ![alt text](./examples/gray.jpg)
 
 
 As a last step, I normalized the image data because it would create an image with zero mean
-![alt text](./examples/normalized.jpg)
+
+
 
 
 My initial model consisted of the following layers:
@@ -114,8 +116,18 @@ Test Accuracy = 0.949
 
 Here are six German traffic signs that I found on the web:
 
-![sign 1](./mysigns/1.jpg) ![sign 2](./mysigns/2.jpg) ![sign 3](./mysigns/3.jpg)
-![sign 4](./mysigns/4.jpg) ![sign 5](./mysigns/5.jpg)![sign 6](./mysigns/6.jpg])
+![sign 1](./mysigns/1.jpg)
+
+![sign 2](./mysigns/2.jpg)
+
+![sign 3](./mysigns/3.jpg)
+
+
+![sign 4](./mysigns/4.jpg)
+
+![sign 5](./mysigns/5.jpg)
+
+![sign 6](./mysigns/6.jpg)
 
 I had to get bigger pictures and resize them, so I was not surprised when I did not get a 100 % accuracy
 
