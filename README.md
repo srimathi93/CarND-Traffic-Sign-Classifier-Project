@@ -1,58 +1,144 @@
-## Project: Build a Traffic Sign Recognition Program
-[![Udacity - Self-Driving Car NanoDegree](https://s3.amazonaws.com/udacity-sdc/github/shield-carnd.svg)](http://www.udacity.com/drive)
+# **Traffic Sign Recognition** 
 
-Overview
----
-In this project, you will use what you've learned about deep neural networks and convolutional neural networks to classify traffic signs. You will train and validate a model so it can classify traffic sign images using the [German Traffic Sign Dataset](http://benchmark.ini.rub.de/?section=gtsrb&subsection=dataset). After the model is trained, you will then try out your model on images of German traffic signs that you find on the web.
+## Writeup
 
-We have included an Ipython notebook that contains further instructions 
-and starter code. Be sure to download the [Ipython notebook](https://github.com/udacity/CarND-Traffic-Sign-Classifier-Project/blob/master/Traffic_Sign_Classifier.ipynb). 
+Here is a link to my [project code](https://github.com/udacity/CarND-Traffic-Sign-Classifier-Project/blob/master/Traffic_Sign_Classifier.ipynb)
 
-We also want you to create a detailed writeup of the project. Check out the [writeup template](https://github.com/udacity/CarND-Traffic-Sign-Classifier-Project/blob/master/writeup_template.md) for this project and use it as a starting point for creating your own writeup. The writeup can be either a markdown file or a pdf document.
+### Data Set Summary & Exploration
 
-To meet specifications, the project will require submitting three files: 
-* the Ipython notebook with the code
-* the code exported as an html file
-* a writeup report either as a markdown or pdf file 
+#### 1. Provide a basic summary of the data set. In the code, the analysis should be done using python, numpy and/or pandas methods rather than hardcoding results manually.
 
-Creating a Great Writeup
----
-A great writeup should include the [rubric points](https://review.udacity.com/#!/rubrics/481/view) as well as your description of how you addressed each point.  You should include a detailed description of the code used in each step (with line-number references and code snippets where necessary), and links to other supporting documents or external references.  You should include images in your writeup to demonstrate how your code works with examples.  
+I used the pandas library to calculate summary statistics of the traffic
+signs data set:
 
-All that said, please be concise!  We're not looking for you to write a book here, just a brief description of how you passed each rubric point, and references to the relevant code :). 
+Number of training examples = 4
+Number of testing examples = 4
+Image data shape = (32, 32, 3)
+Number of classes = 43
 
-You're not required to use markdown for your writeup.  If you use another method please just submit a pdf of your writeup.
 
-The Project
----
-The goals / steps of this project are the following:
-* Load the data set
-* Explore, summarize and visualize the data set
-* Design, train and test a model architecture
-* Use the model to make predictions on new images
-* Analyze the softmax probabilities of the new images
-* Summarize the results with a written report
+### Design and Test a Model Architecture
 
-### Dependencies
-This lab requires:
 
-* [CarND Term1 Starter Kit](https://github.com/udacity/CarND-Term1-Starter-Kit)
+As a first step, I decided to convert the images to grayscale because ...
 
-The lab environment can be created with CarND Term1 Starter Kit. Click [here](https://github.com/udacity/CarND-Term1-Starter-Kit/blob/master/README.md) for the details.
+Here is an example of a traffic sign image before and after grayscaling.
 
-### Dataset and Repository
+![alt text][./examples/exampl.jpg]
+![alt text][./examples/gray.jpg]
 
-1. Download the data set. The classroom has a link to the data set in the "Project Instructions" content. This is a pickled dataset in which we've already resized the images to 32x32. It contains a training, validation and test set.
-2. Clone the project, which contains the Ipython notebook and the writeup template.
-```sh
-git clone https://github.com/udacity/CarND-Traffic-Sign-Classifier-Project
-cd CarND-Traffic-Sign-Classifier-Project
-jupyter notebook Traffic_Sign_Classifier.ipynb
-```
 
-### Requirements for Submission
-Follow the instructions in the `Traffic_Sign_Classifier.ipynb` notebook and write the project report using the writeup template as a guide, `writeup_template.md`. Submit the project code and writeup document.
+As a last step, I normalized the image data because it would create an image with zero mean
+![alt text][./examples/normalized.jpg]
 
-## How to write a README
-A well written README file can enhance your project and portfolio.  Develop your abilities to create professional README files by completing [this free course](https://www.udacity.com/course/writing-readmes--ud777).
 
+My initial model consisted of the following layers:
+
+Layer                                          Description
+Convolution Layer 1                            Layer from 32 X 32 X 1 --> 28 X 28 X 6
+Activation Layer 1                             Relu activation
+Pooling Layer 1                                Max pooling 28 X 28 X 6 --> 14 X 14 X 6
+Convolution Layer 2                            Layer from 14 X 14 X 6 --> 10 X 10 X 16
+Activation Layer 2                             Relu activation
+Pooling Layer 2                                Max pooling 10 X 10 X 16 --> 5 X 5 X 6
+Flatten Layer 1                                Flatten 5x5x16 --> 400
+Fully Connected Layer 1                        Layer from 400 --> 120
+Activation Layer 2                             Relu activation
+Fully Connected Layer 2                        Layer from 120 --> 84
+Activation Layer 3                             Relu activation
+Fully Connected Layer 3                        Layer from 84 --> 43
+
+
+This model gave me an accuracy of only 0.929. Because of this, I decided to add a dropout layer and another convolution layer to help increase accuracy. I also modified the epochs and batch size to the following:
+EPOCHS = 100
+BATCH_SIZE = 100
+
+The drop out rate was set to 0.5.
+
+So the finalized model is the following:
+
+Layer                                          Description
+Convolution Layer 1                            Layer from 32 X 32 X 1 --> 28 X 28 X 6
+Activation Layer 1                             Relu activation
+Pooling Layer 1                                Max pooling 28 X 28 X 6 --> 14 X 14 X 6
+Convolution Layer 2                            Layer from 14 X 14 X 6 --> 10 X 10 X 16
+Activation Layer 2                             Relu activation
+Pooling Layer 2                                Max pooling 10 X 10 X 16 --> 5 X 5 X 6
+Convolution Layer 3                            Layer from 14 X 14 X 6 --> 1 X 1 X 400
+Activation Layer 3                             Relu activation
+Pooling Layer 3                                Max pooling 1 X 1 X 400 --> 1 X 1 X 400
+Flatten Layer 1                                Flatten 1 X 1 X 400 --> 400
+Dropout Layer 1                                Droput wit prob = 0.5
+Fully Connected Layer 1                        Layer from 400 --> 120
+Activation Layer 3                             Relu activation
+Dropout Layer 2                                Droput wit prob = 0.5
+Fully Connected Layer 2                        Layer from 120 --> 84
+Activation Layer 4                             Relu activation
+Fully Connected Layer 3                        Layer from 84 --> 43
+
+
+The final model has 2 dropout layers and one additional conolution layer. This gives an accuracy of 0.948
+
+The learning rate is set to 0.0006
+
+The initial accuracy was 0.929.This showed that my model was underfitted because I saw low accuracy on both training and validation set. I thought that adding another convolution layer would help but it did not exactly work in my favor. Then I decided to add two dropout layers which would help increase the accuracy
+
+Final model statistics:
+
+
+Validation Accuracy = 0.975
+Train Accuracy = 1.000
+Test Accuracy = 0.949
+
+
+
+
+
+
+### Test a Model on New Images
+
+
+
+Here are six German traffic signs that I found on the web:
+
+![alt text][./mysigns/1.jpg] ![alt text][./mysigns/2.jpg] ![alt text][./mysigns/3.jpg] 
+![alt text][./mysigns/4.jpg] ![alt text][./mysigns/5.jpg]![alt text][./mysigns/6.jpg]
+
+I had to get bigger pictures and resize them, so I was not surprised when I did not get a 100 % accuracy
+
+The results of the prediction are as follows:
+
+Image:                                        Prediction:
+
+AnimalCrossing                                AnimalCrossing
+Right of Way                                  Right of Way
+50 speed limit                                30 speed limit
+Priority Road                                 Priority Road
+No entry                                      No entry
+Slippery Road                                 Slippery Road
+
+
+Overall accuracy is at 0.83
+
+
+The softmax for the images is given belw:
+TopKV2(values=array([[  1.00000000e+00,   2.05589453e-37,   0.00000000e+00,
+          0.00000000e+00,   0.00000000e+00],
+       [  1.00000000e+00,   0.00000000e+00,   0.00000000e+00,
+          0.00000000e+00,   0.00000000e+00],
+       [  9.18842971e-01,   1.85018182e-02,   1.65516213e-02,
+          1.26531962e-02,   8.90594721e-03],
+       [  9.99670744e-01,   2.66555668e-04,   5.71551864e-05,
+          4.90605362e-06,   3.87292346e-07],
+       [  1.00000000e+00,   6.99090173e-17,   1.12527252e-18,
+          3.45823292e-21,   9.02578045e-22],
+       [  9.99971747e-01,   2.80115783e-05,   2.28508085e-07,
+          1.03226061e-09,   6.00682698e-11]], dtype=float32), indices=array([[31,  5,  0,  1,  2],
+       [11,  0,  1,  2,  3],
+       [ 1, 21, 33,  0, 40],
+       [12, 33, 13, 35,  3],
+       [17, 14, 33, 34, 12],
+       [23, 11, 30, 29,  3]], dtype=int32))
+       
+
+As you can see for the mis labelled image, the highest probability is that it is a 30 speed limit instead 50 which I attribute to the poor quality of the image.
